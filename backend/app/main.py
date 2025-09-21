@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from pymongo import MongoClient
 from datetime import datetime
 
@@ -8,13 +9,15 @@ import cloudinary.uploader
 import config
 
 
+backend = Flask(__name__)
+CORS(backend)  # <-- this allows all origins (for development)
+
 #------------------------------------------------------
 
 
 # Connecting to MongoDB Atlas
 
 load_dotenv()  # load .env file
-backend = Flask(__name__)
 
 MONGO_URI = os.getenv("MONGO_URI")
 client = MongoClient(MONGO_URI) #mongoclient creates a connection to MongoDB server using the URI.
@@ -86,4 +89,4 @@ def upload_file(): #upload_file() → The function that handles the request
 
 
 if __name__ == "__main__":
-    backend.run(debug=True)
+    backend.run(port=5000,debug=True)
